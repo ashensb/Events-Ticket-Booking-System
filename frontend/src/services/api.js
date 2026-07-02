@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+                                  //http://localhost:5000/api
 const API = axios.create({
-    baseURL: 'http://localhost:5000/api'
+    baseURL: 'http://3.220.52.221:5000/api'
 });
 
 // 💡 හැම Request එකකටම කලින් LocalStorage එකේ Token එකක් තියෙනවා නම් ඒක Header එකට ඇඩ් කරන ලොජික් එක
