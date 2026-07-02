@@ -1,19 +1,19 @@
-# Production-ready Lightweight Node Image එකක් පාවිච්චි කරමු
+# Production-ready Lightweight Node Image 
 FROM node:20-alpine
 
-# Security Best Practice: Root යූසර් වෙනුවට අඩු අවසර තියෙන node යූසර්ව පාවිච්චි කිරීම
+# Security Best Practice: Run the application as a non-root user
 USER node
 
 WORKDIR /home/node/app
 
-# Dependencies install කිරීම
+# Dependencies install 
 COPY --chown=node:node package*.json ./
 RUN npm ci --only=production
 
-# සෝස් කෝඩ් එක කොපි කිරීම
+# Copy the source code
 COPY --chown=node:node . .
 
-# Production Node Environment එක සෙට් කිරීම
+# Set the environment variable for production
 ENV NODE_ENV=production
 EXPOSE 5000
 

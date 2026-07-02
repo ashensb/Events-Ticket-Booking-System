@@ -6,7 +6,7 @@ function Register({ switchToLogin }) {
     name: '',
     email: '',
     password: '',
-    role: 'user' // Default එක 'user' (Regular User) විදිහට සෙට් කරනවා
+    role: 'user' 
   });
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -19,12 +19,12 @@ function Register({ switchToLogin }) {
     setLoading(true);
 
     try {
-      // 💡 Backend එකට ඩේටා යැවීම
+      // Call the API to register the user
       await registerUser(formData);
       
       setSuccessMsg("Registration Successful! තත්පරයකින් ඔයාව Login පේජ් එකට හරවා යවනවා...");
       
-      // තත්පර 2කින් Auto එකම Login පේජ් එකට යවනවා
+      // After successful registration, redirect to login page after a short delay
       setTimeout(() => {
         switchToLogin();
       }, 2000);
@@ -113,7 +113,7 @@ function Register({ switchToLogin }) {
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             >
-              {/* 💡 වැදගත්: value එකට දෙන්නේ සරල 'user' සහ 'admin' විතරයි */}
+             
               <option value="user">🤵 Regular User (Ticket Buyer)</option>
               <option value="admin">⚡ System Administrator (Admin)</option>
             </select>

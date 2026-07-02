@@ -4,7 +4,7 @@ import { verifyToken, isAdmin } from '../middleware/auth.js'; // 💡 Middleware
 
 const router = express.Router();
 
-// 1. Get all events (ඕනෑම කෙනෙකුට බලන්න පුළුවන් - Public)
+// 1. Get all events 
 router.get('/', async (req, res) => {
     try {
         const events = await Event.find();
