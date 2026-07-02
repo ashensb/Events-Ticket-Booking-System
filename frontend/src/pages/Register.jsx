@@ -1,89 +1,142 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { registerUser } from '../services/api';
 
-function Register() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'user' });
-  const navigate = useNavigate();
+function Register({ switchToLogin }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: 'user' // Default එක 'user' (Regular User) විදිහට සෙට් කරනවා
+  });
+  const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log(formData);
-    navigate('/login');
+    setErrorMsg('');
+    setSuccessMsg('');
+    setLoading(true);
+
+    try {
+      // 💡 Backend එකට ඩේටා යැවීම
+      await registerUser(formData);
+      
+      setSuccessMsg("Registration Successful! තත්පරයකින් ඔයාව Login පේජ් එකට හරවා යවනවා...");
+      
+      // තත්පර 2කින් Auto එකම Login පේජ් එකට යවනවා
+      setTimeout(() => {
+        switchToLogin();
+      }, 2000);
+      
+    } catch (error) {
+      setErrorMsg(error.response?.data?.message || "ලියාපදිංචි වීමට නොහැකි වුණා. නැවත උත්සාහ කරන්න.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/30 px-4">
-      <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-8 shadow-2xl shadow-indigo-950/20">
+    <div className="min-h-screen relative flex items-center justify-center bg-[#030712] overflow-hidden px-4 select-none">
+      
+      {/* Background Glowing Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-purple-600/10 blur-[120px] animate-pulse delay-700"></div>
+
+      <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-2xl border border-slate-800/60 rounded-3xl p-8 shadow-2xl shadow-indigo-950/20 relative z-10">
         
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 text-xl">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white mb-4 text-2xl shadow-lg shadow-indigo-500/20">
             🚀
           </div>
-          <h2 className="text-2xl font-black tracking-tight text-white">Create Account</h2>
-          <p className="text-sm text-slate-400 mt-1">Join Ticket-Craft today and explore events</p>
+          <h2 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
+            Create Account
+          </h2>
+          <p className="text-sm text-slate-400 mt-2">Join Ticket-Craft today and explore events</p>
         </div>
+
+        {/* Success Alert Box */}
+        {successMsg && (
+          <div className="mb-5 p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs font-semibold text-emerald-400 text-center">
+            ✅ {successMsg}
+          </div>
+        )}
+
+        {/* Error Alert Box */}
+        {errorMsg && (
+          <div className="mb-5 p-3.5 bg-rose-500/10 border border-rose-500/20 rounded-xl text-xs font-semibold text-rose-400 text-center">
+            🛑 {errorMsg}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
             <input 
               type="text" 
               required
-              className="w-full px-4 py-3 bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl text-slate-100 placeholder-slate-600 text-sm focus:outline-none transition-all duration-200"
-              placeholder="Amal Perera"
+              className="w-full px-4 py-3 bg-slate-950/60 border border-slate-800/80 focus:border-indigo-500 rounded-xl text-slate-100 text-sm focus:outline-none transition"
+              placeholder="Ashen Sandeepa"
+              value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
             <input 
               type="email" 
               required
-              className="w-full px-4 py-3 bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl text-slate-100 placeholder-slate-600 text-sm focus:outline-none transition-all duration-200"
-              placeholder="amal@gmail.com"
+              className="w-full px-4 py-3 bg-slate-950/60 border border-slate-800/80 focus:border-indigo-500 rounded-xl text-slate-100 text-sm focus:outline-none transition"
+              placeholder="ashen@gmail.com"
+              value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
             <input 
               type="password" 
               required
-              className="w-full px-4 py-3 bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl text-slate-100 placeholder-slate-600 text-sm focus:outline-none transition-all duration-200"
+              className="w-full px-4 py-3 bg-slate-950/60 border border-slate-800/80 focus:border-indigo-500 rounded-xl text-slate-100 text-sm focus:outline-none transition"
               placeholder="••••••••"
+              value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Register As</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Register As</label>
             <select 
-              className="w-full px-4 py-3 bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl text-slate-100 text-sm focus:outline-none cursor-pointer transition-all duration-200"
-              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-950/60 border border-slate-800/80 focus:border-indigo-500 rounded-xl text-slate-100 text-sm focus:outline-none transition"
               value={formData.role}
+              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             >
+              {/* 💡 වැදගත්: value එකට දෙන්නේ සරල 'user' සහ 'admin' විතරයි */}
               <option value="user">🤵 Regular User (Ticket Buyer)</option>
-              <option value="admin">🛠️ System Admin</option>
+              <option value="admin">⚡ System Administrator (Admin)</option>
             </select>
           </div>
 
           <button 
             type="submit"
-            className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition-all duration-200 transform active:scale-[0.98] shadow-lg shadow-indigo-600/20 mt-2 cursor-pointer"
+            disabled={loading}
+            className="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl text-sm transition transform active:scale-[0.98] shadow-xl shadow-indigo-600/20 cursor-pointer disabled:opacity-50"
           >
-            Register Now
+            {loading ? "Registering..." : "Register Now"}
           </button>
         </form>
 
-        <div className="text-center mt-6 pt-5 border-t border-slate-800/60">
+        <div className="text-center mt-6 pt-5 border-t border-slate-800/40">
           <p className="text-sm text-slate-400">
             Already have an account?{' '}
-            <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold transition">
+            <button 
+              onClick={switchToLogin} 
+              className="text-indigo-400 hover:text-indigo-300 font-bold transition bg-transparent border-none cursor-pointer hover:underline"
+            >
               Login here
-            </Link>
+            </button>
           </p>
         </div>
 
