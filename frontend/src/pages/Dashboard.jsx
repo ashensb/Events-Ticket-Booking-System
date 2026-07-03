@@ -121,7 +121,7 @@ function Dashboard() {
                     user?.role === 'admin'
                       ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed'
                       : event.availableTickets > 0 
-                        ? 'bg-red-600 hover:bg-red-500 text-white cursor-pointer' 
+                        ? 'bg-blue-600 hover:bg-blue-500 text-white cursor-pointer' 
                         : 'bg-slate-800 text-slate-500 cursor-not-allowed'
                   }`}
                 >
