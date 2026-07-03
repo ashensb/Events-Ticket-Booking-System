@@ -73,7 +73,7 @@ function Dashboard() {
   return (
     <div>
       <div className="text-center md:text-left mb-8">
-        <h1 className="text-3xl font-extrabold text-slate-100 sm:text-4xl">Upcoming Events</h1>
+        <h1 className="text-3xl font-extrabold text-slate-100 sm:text-4xl">Trending Live Events</h1>
         <p className="mt-2 text-sm text-slate-400">Discover and manage premium live experiences.</p>
       </div>
 
