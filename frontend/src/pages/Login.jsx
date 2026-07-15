@@ -5,6 +5,8 @@ function Login({ onLoginSuccess, switchToRegister }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  // Password 
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,7 +16,6 @@ function Login({ onLoginSuccess, switchToRegister }) {
     try {
       // Call the API to log in the user
       const { data } = await loginUser(formData);
-      
       
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user)); 
@@ -74,13 +75,30 @@ function Login({ onLoginSuccess, switchToRegister }) {
           <div>
             <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
             <input 
-              type="password" 
+              type={showPassword ? "text" : "password"} // Type එක dynamically මාරු වෙනවා
               required
               className="w-full px-4 py-3.5 bg-slate-950/60 border border-slate-800/80 focus:border-indigo-500 rounded-xl text-slate-100 placeholder-slate-600 text-sm focus:outline-none transition-all duration-200 focus:ring-2 focus:ring-indigo-500/20"
               placeholder="••••••••"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
+            
+            {/* Show Password Checkbox */}
+            <div className="flex items-center mt-3 ml-1">
+              <input 
+                id="show-password"
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+                className="w-4 h-4 rounded bg-slate-950/60 border-slate-800 text-indigo-600 focus:ring-indigo-500/40 focus:ring-2 accent-indigo-500 cursor-pointer"
+              />
+              <label 
+                htmlFor="show-password" 
+                className="ml-2.5 text-xs font-semibold text-slate-400 select-none cursor-pointer hover:text-slate-300 transition-colors"
+              >
+                Show Password
+              </label>
+            </div>
           </div>
 
           {/* Login Button */}
