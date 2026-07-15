@@ -22,7 +22,7 @@ function Register({ switchToLogin }) {
       // Call the API to register the user
       await registerUser(formData);
       
-      setSuccessMsg("Registration Successful! තත්පරයකින් ඔයාව Login පේජ් එකට හරවා යවනවා...");
+      setSuccessMsg("Registration Successful! ...");
       
       // After successful registration, redirect to login page after a short delay
       setTimeout(() => {
@@ -30,7 +30,7 @@ function Register({ switchToLogin }) {
       }, 2000);
       
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || "ලියාපදිංචි වීමට නොහැකි වුණා. නැවත උත්සාහ කරන්න.");
+      setErrorMsg(error.response?.data?.message || "try again.");
     } finally {
       setLoading(false);
     }
